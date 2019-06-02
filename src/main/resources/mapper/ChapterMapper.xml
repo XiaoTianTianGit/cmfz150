@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baizhi.dao.ChapterMapper" >
+  <resultMap id="BaseResultMap" type="com.baizhi.entity.Chapter" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <result column="size" property="size" jdbcType="DOUBLE" />
+    <result column="length" property="length" jdbcType="VARCHAR" />
+    <result column="times" property="times" jdbcType="VARCHAR" />
+    <result column="createTime" property="createtime" jdbcType="TIMESTAMP" />
+  <!--  <result column="AlbumId" property="albumid" jdbcType="VARCHAR" />-->
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, name, url, size, length, times, createTime, AlbumId
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from chapter
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from chapter
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.baizhi.entity.Chapter" >
+    insert into chapter (id, name, url, 
+      size, length, times, 
+      createTime, AlbumId)
+    values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, 
+      #{size,jdbcType=DOUBLE}, #{length,jdbcType=VARCHAR}, #{times,jdbcType=VARCHAR}, 
+      #{createtime,jdbcType=TIMESTAMP}, #{albumid,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.baizhi.entity.Chapter" >
+    insert into chapter
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="url != null" >
+        url,
+      </if>
+      <if test="size != null" >
+        size,
+      </if>
+      <if test="length != null" >
+        length,
+      </if>
+      <if test="times != null" >
+        times,
+      </if>
+      <if test="createtime != null" >
+        createTime,
+      </if>
+      <if test="albumid != null" >
+        AlbumId,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null" >
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="size != null" >
+        #{size,jdbcType=DOUBLE},
+      </if>
+      <if test="length != null" >
+        #{length,jdbcType=VARCHAR},
+      </if>
+      <if test="times != null" >
+        #{times,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="albumid != null" >
+        #{albumid,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.baizhi.entity.Chapter" >
+    update chapter
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null" >
+        url = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="size != null" >
+        size = #{size,jdbcType=DOUBLE},
+      </if>
+      <if test="length != null" >
+        length = #{length,jdbcType=VARCHAR},
+      </if>
+      <if test="times != null" >
+        times = #{times,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        createTime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="albumid != null" >
+        AlbumId = #{albumid,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.baizhi.entity.Chapter" >
+    update chapter
+    set
+      url = #{url,jdbcType=VARCHAR},
+      size = #{size,jdbcType=DOUBLE},
+      length = #{length,jdbcType=VARCHAR},
+
+
+
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <!--根据专辑id 查询对应的 章节-->
+
+  <select id="selectByPrimaryAlbumKeyPage" resultType="Chapter">
+    select
+    <include refid="Base_Column_List" />
+    from chapter
+    where AlbumId = #{albumId,jdbcType=VARCHAR} limit #{benginRows},#{rows};
+  </select>
+
+  <!--查询总共有多少条数据-->
+  <select id="conuntChapter" resultType="int">
+    select count(1) from chapter where  AlbumId = #{albumId,jdbcType=VARCHAR}
+  </select>
+
+  <!--根据id批量删除-->
+  <delete id="deleteByIdsChapter">
+    delete  from chapter where id  in
+    <foreach collection="array" open="(" item="id" separator="," close=")" >
+      #{id,jdbcType=VARCHAR}
+    </foreach>
+
+  </delete>
+</mapper>

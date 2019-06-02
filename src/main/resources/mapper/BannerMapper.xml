@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baizhi.dao.BannerMapper" >
+  <resultMap id="BaseResultMap" type="com.baizhi.entity.Banner" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="picName" property="picname" jdbcType="VARCHAR" />
+    <result column="picPath" property="picpath" jdbcType="VARCHAR" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="createTime" property="createtime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, picName, picPath, description, status, createTime
+  </sql>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from banner
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete  from banner where id  in
+    <foreach collection="array" open="(" item="id" separator="," close=")" >
+      #{id,jdbcType=VARCHAR}
+    </foreach>
+
+  </delete>
+
+  <insert id="insert" parameterType="com.baizhi.entity.Banner" >
+    insert into banner (id, picName, picPath, 
+      description, status, createTime
+      )
+    values (#{id,jdbcType=VARCHAR}, #{picname,jdbcType=VARCHAR}, #{picpath,jdbcType=VARCHAR}, 
+      #{description,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.baizhi.entity.Banner" >
+    insert into banner
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="picname != null" >
+        picName,
+      </if>
+      <if test="picpath != null" >
+        picPath,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createtime != null" >
+        createTime,
+      </if>
+    </trim>
+
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="picname != null" >
+        #{picname,jdbcType=VARCHAR},
+      </if>
+      <if test="picpath != null" >
+        #{picpath,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.baizhi.entity.Banner" >
+    update banner
+    <set >
+      <if test="picname != null" >
+        picName = #{picname,jdbcType=VARCHAR},
+      </if>
+      <if test="picpath != null || picpath !=''" >
+        picPath = #{picpath,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        createTime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.baizhi.entity.Banner" >
+    update banner
+    set picName = #{picname,jdbcType=VARCHAR},
+      picPath = #{picpath,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      createTime = #{createtime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+  <!--查询总共有多少条数据-->
+  <select id="conuntBanner" resultType="int">
+    select count(1) from banner
+  </select>
+
+  <!--分页展示所有数据-->
+  <select id="selectBannerPage" resultType="Banner">
+    select
+    <include refid="Base_Column_List" />
+    from banner
+    limit #{benginRows},#{rows};
+  </select>
+
+  <!--根据id修改图片的url-->
+  <update id="updateImgUrl" parameterType="com.baizhi.entity.Banner">
+    update banner
+    <set>
+      <if test="picpath != null" >
+        picPath = #{picpath,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+
+  <!--批量插入-->
+  <insert id="addAllBanner" >
+    insert into banner (id,picname,picpath,description,status,createtime)
+    values
+          <foreach collection="list" item="banner" index="index" separator=",">
+            (#{banner.id}, #{banner.picname}, #{banner.picpath},#{banner.description},#{banner.status},#{banner.createtime})
+          </foreach>
+  </insert>
+</mapper>

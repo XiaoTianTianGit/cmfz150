@@ -1,0 +1,31 @@
+server:
+  port: 9999
+  servlet:
+    context-path: /cmfz
+    jsp:
+      init-parameters:
+        development: true     #支持jsp热部署
+
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/cmfz150
+    username: root
+    password: root
+  http:
+    encoding:
+      force: true
+      charset: UTF-8
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 200MB # 最大上传大小
+  mvc:
+    view: #peiz视图解析器
+      suffix: .jsp #后缀
+      prefix: / #前缀
+
+mybatis:
+  type-aliases-package: com.baizhi.entity
+  mapper-locations: classpath:mapper/*Mapper.xml

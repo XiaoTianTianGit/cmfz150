@@ -83,7 +83,7 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
-            <version>1.2.47</version>
+            <version>1.2.83</version>
         </dependency>
 
         <!--集成mbg 插件  主要是通过库表生成实体和 dao接口 和实现的mapper文件-->
